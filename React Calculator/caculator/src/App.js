@@ -6,7 +6,29 @@ class App extends Component {
   
   constructor() {
     super();
-    this.state = { userInput: "", calculation: "" };
+    this.state = { userInput: "", calculation: 0 };
+  }
+  
+  componentDidMount() {
+    let userInterface = document.querySelector('.user-interface');
+    userInterface.addEventListener('click', this.handleUserInput);
+  }
+  
+  handleUserInput(e) {
+    console.log(e.target.innerHTML);
+    console.log(e.target);
+    let userInput = e.target.innerHTML; 
+    switch userInput {
+      case '=' :
+    }
+      
+    //probably needs to be a case statement here
+    switch 
+    this.setState({ userInput: this.state.userInput + e.target.innerHTML })
+  }
+  
+  calculate() {
+    
   }
   
   render() {
