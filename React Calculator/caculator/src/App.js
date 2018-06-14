@@ -6,29 +6,44 @@ class App extends Component {
   
   constructor() {
     super();
-    this.state = { userInput: "", calculation: 0 };
+    //operatorEntered will help us caculate on the fly 
+    this.state = { userInput: "", calculation: 0, operatorEntered: false };
   }
   
   componentDidMount() {
     let userInterface = document.querySelector('.user-interface');
-    userInterface.addEventListener('click', this.handleUserInput);
+    userInterface.addEventListener('click', e => this.handleUserInput(e));
   }
   
   handleUserInput(e) {
     console.log(e.target.innerHTML);
     console.log(e.target);
     let userInput = e.target.innerHTML; 
-    switch userInput {
-      case '=' :
-    }
+    // switch userInput {
+    //   case '=' :
+    // }
       
+    console.log(this.state);
     //probably needs to be a case statement here
-    switch 
     this.setState({ userInput: this.state.userInput + e.target.innerHTML })
   }
   
-  calculate() {
-    
+
+  calculate(userInput) {
+    let accumulater = undefined; 
+    for (let i = 0; i < userInput.length; i++) {
+      switch (userInput[i]) {
+        case '+' :
+          break;
+        case '-' :
+          break; 
+        case '/' :
+          break;
+        case 'x' :
+          break;
+        
+      }
+    }
   }
   
   render() {
