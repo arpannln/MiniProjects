@@ -15,14 +15,19 @@ class App extends Component {
     return (
       <div className="calculator">
         <div className="calculation">{this.state.calculation}</div>
-        <div className="numbers">
-          {numbers.map( (number) => {
-            return (<div className="number"> {number} </div>)
-          })}
+        <div className="user-interface">
+          <div className="numbers">
+            {numbers.map( (number) => {
+              return (<div className="number"> {number} </div>)
+            })}
+          </div>
+          <div className="operators">
+            {operators.map( (operator) => {
+              return (<div className="operator"> {operator} </div>)
+            })}
+          </div>
         </div>
-        <div className="operators">
-        </div>
-      </div>
+    </div>
     );
   }
 }

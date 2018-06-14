@@ -21,7 +21,10 @@
 .App-intro {
   font-size: large;
 }
-
+.user-interface {
+  display: flex;
+  flex-direction: row;
+}
 .calculator {
   display: flex;
   margin-left: 200px;
@@ -31,27 +34,49 @@
 }
 .calculation{
   display: flex;
-  background-color: grey;
+  background-color: black;
+  border-bottom: 2px solid white;
   width: 100%;
   height: 100px;
 }
-.numbers {
+.numbers{
   display: flex;
   flex-wrap: wrap;
+  background-color: lightgrey;
   height: 300px;
   width: 300px;
 }
-.number {
+
+.number{
   display: flex;
-  height: 33%;
-  width: 33%;
-  background-color: lightgrey;
+  height: 25%;
+  width: 32.6%;
+  border-bottom: 2px solid white;
+  border-right: 2px solid white;
   align-items: center;
   justify-content: center;
-
+  background-color: lightgrey;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.numbers:last-child {
+  background-color: yellow;
+}
+
+.operators {
+  width: 100px;
+  height: 300px;
+}
+
+.operator {
+  display: flex;
+  width: 100%;
+  height: 25%;
+  border-bottom: 2px solid white;
+  background-color: grey;
+  align-items: center;
+  justify-content: center;
+}
+
+.operator:hover, .number:hover {
+
 }
