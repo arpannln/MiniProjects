@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+
 class App extends Component {
   
   constructor() {
@@ -22,29 +23,37 @@ class App extends Component {
     // switch userInput {
     //   case '=' :
     // }
-      
+    
     console.log(this.state);
-    //probably needs to be a case statement here
-    this.setState({ userInput: this.state.userInput + e.target.innerHTML })
+
   }
   
-
-  calculate(userInput) {
-    let accumulater = undefined; 
-    for (let i = 0; i < userInput.length; i++) {
-      switch (userInput[i]) {
-        case '+' :
-          break;
-        case '-' :
-          break; 
-        case '/' :
-          break;
-        case 'x' :
-          break;
-        
-      }
+  //gameplan: make all these functions, each will handle an operation. 
+  //create an object of these functions and map through them to get the right handler 
+  const handlers = {
+    //this may not be right 
+    that = this; 
+    const addition = () => {
+      
+    }
+    
+    const subtraction = () => {
+      
+    }
+    
+    const multiplication = () => {
+      
+    }
+    
+    const subtraction = () => {
+      
+    }
+    
+    const equals = () => {
+      
     }
   }
+  
   
   render() {
     const numbers = [0, 1,'AC',2, 3, 4, 5, 6, 7, 8, 9, '='];
