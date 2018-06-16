@@ -6,5 +6,9 @@ function $(selector) {
     return this;
   };
 
-  
+  this.return = function() {
+    return this.value;
+  };
+
+  return this;
 }
