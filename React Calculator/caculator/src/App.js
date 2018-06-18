@@ -8,7 +8,7 @@ class App extends Component {
   constructor() {
     super();
     //operatorEntered will help us caculate on the fly 
-    this.state = { output: '0' };
+    this.state = { output: '', answer: '' };
   }
   
   componentDidMount() {
@@ -23,11 +23,12 @@ class App extends Component {
     console.log(userInput);
     switch (userInput) {
       case '=' :
-        let answer = eval(this.state.userInput)
-        this.setState({ output: `${answer}`});
+        const answer = eval(this.state.output);
+        
+        this.setState({ answer });
         break; 
       case 'AC' :
-        this.setState({ output: '0' })
+        this.setState({ output: '' })
         break;
       default: 
         this.setState({ output: this.state.output += userInput});
@@ -43,7 +44,7 @@ class App extends Component {
     const operators = ['*', '/', '+', '-'];
     return (
       <div className="calculator">
-        <div className="calculation">{this.state.output}</div>
+        <div className="calculation">{this.state.answer}</div>
         <div className="user-interface">
           <div className="numbers">
             {numbers.map( (number) => {
