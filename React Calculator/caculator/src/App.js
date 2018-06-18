@@ -8,7 +8,7 @@ class App extends Component {
   constructor() {
     super();
     //operatorEntered will help us caculate on the fly 
-    this.state = { userInput: "", calculation: 0, operatorEntered: false };
+    this.state = { output: '0' };
   }
   
   componentDidMount() {
@@ -19,10 +19,20 @@ class App extends Component {
   handleUserInput(e) {
     console.log(e.target.innerHTML);
     console.log(e.target);
-    let userInput = e.target.innerHTML; 
-    // switch userInput {
-    //   case '=' :
-    // }
+    let userInput = e.target.innerHTML;
+    console.log(userInput);
+    switch (userInput) {
+      case '=' :
+        let answer = eval(this.state.userInput)
+        this.setState({ output: `${answer}`});
+        break; 
+      case 'AC' :
+        this.setState({ output: '0' })
+        break;
+      default: 
+        this.setState({ output: this.state.output += userInput});
+        break;
+    }
     
     console.log(this.state);
 
@@ -33,16 +43,16 @@ class App extends Component {
     const operators = ['*', '/', '+', '-'];
     return (
       <div className="calculator">
-        <div className="calculation">{this.state.calculation}</div>
+        <div className="calculation">{this.state.output}</div>
         <div className="user-interface">
           <div className="numbers">
             {numbers.map( (number) => {
-              return (<div className="number"> {number} </div>)
+              return (<div className="number">{number}</div>)
             })}
           </div>
           <div className="operators">
             {operators.map( (operator) => {
-              return (<div className="operator"> {operator} </div>)
+              return (<div className="operator">{operator}</div>)
             })}
           </div>
         </div>
