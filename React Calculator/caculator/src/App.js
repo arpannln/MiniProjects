@@ -28,36 +28,9 @@ class App extends Component {
 
   }
   
-  //gameplan: make all these functions, each will handle an operation. 
-  //create an object of these functions and map through them to get the right handler 
-  const handlers = {
-    //this may not be right 
-    that = this; 
-    const addition = () => {
-      
-    }
-    
-    const subtraction = () => {
-      
-    }
-    
-    const multiplication = () => {
-      
-    }
-    
-    const subtraction = () => {
-      
-    }
-    
-    const equals = () => {
-      
-    }
-  }
-  
-  
   render() {
     const numbers = [0, 1,'AC',2, 3, 4, 5, 6, 7, 8, 9, '='];
-    const operators = ['x', '/', '+', '-'];
+    const operators = ['*', '/', '+', '-'];
     return (
       <div className="calculator">
         <div className="calculation">{this.state.calculation}</div>

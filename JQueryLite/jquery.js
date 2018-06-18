@@ -10,5 +10,5 @@ function $(selector) {
     return this.value;
   };
 
-  return this;
+  return this.value;
 }
