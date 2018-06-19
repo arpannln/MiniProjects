@@ -17,9 +17,9 @@ class App extends Component {
   randomBoard(n) {
     let board = new Array(n)
     for (let i = 0; i < board.length; i++) {
-      board[i] = new Array(n);
+      board[i] = new Array(n).fill(0);
     }
-    this.randomizeBombs(board, 5)
+    this.randomizeBombs(board, 10)
     console.log(board);
   }
   
@@ -36,6 +36,11 @@ class App extends Component {
       this.randomizeBombs(board, --bombCount);
     }
   }
+  
+  upSurroundingCount() {
+    
+  }
+
   
   render() {
     return (
