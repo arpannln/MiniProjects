@@ -33,14 +33,21 @@ class App extends Component {
       this.randomizeBombs(board, bombCount); 
     } else {
       board[x][y] = '*';
-      this.upSurroundingCount(x, y);
+      this.upSurroundingCount(board, x, y);
       this.randomizeBombs(board, --bombCount);
     }
   }
   
   //this is going to just add 1 to surrounding boxes 
-  upSurroundingCount() {
-    
+  upSurroundingCount(board, x, y) {
+    if (!isNaN(board[x + 1][y])) board[x + 1][y] += 1;
+    if (!isNaN(board[x + 1][y + 1])) board[x + 1][y + 1] += 1;
+    if (!isNaN(board[x][y + 1])) board[x][y + 1] += 1;
+    if (!isNaN(board[x][y])) board[x][y] += 1;
+    if (!isNaN(board[x][y])) board[x][y] += 1;
+    if (!isNaN(board[x][y])) board[x][y] += 1;
+    if (!isNaN(board[x][y])) board[x][y] += 1;
+    if (!isNaN(board[x][y])) board[x][y] += 1;
   }
 
   
