@@ -33,7 +33,8 @@ class App extends Component {
       this.randomizeBombs(board, bombCount); 
     } else {
       board[x][y] = '*';
-      this.randomizeBombs(board, bombCount--);
+      //lol be careful about --x and x-- 
+      this.randomizeBombs(board, --bombCount);
     }
   }
   
