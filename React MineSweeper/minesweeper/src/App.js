@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 const GAMESIZE = 10;
-
+const BOARDSIZE = GAMESIZE * 20;
 class App extends Component {
 
   constructor() {
@@ -59,18 +59,20 @@ class App extends Component {
     let board = this.state.board;
     console.log(board);
     return board ? 
-      (
-        <div className="App">
-          {
-            board.map( (row) => {
-              return (
-                row.map( (tile, y) => {
-                  console.log('hi');
-                  return (<button className="tile">{tile}</button>);
-                })
-              );
-          })}
-        </div> 
+      (<div style={MineSweeperStyles.gameStyle} className="game">
+          <h2 style={MineSweeperStyles.headerStyle}>MINESWEEPER</h2>
+          <div style={MineSweeperStyles.boardStyle} className="board">
+            {
+              board.map( (row) => {
+                return (
+                  row.map( (tile, y) => {
+                    console.log('hi');
+                    return (<button style={MineSweeperStyles.buttonStyle} className="tile">{tile}</button>);
+                  })
+                );
+            })}
+          </div> 
+        </div>
       ) :
       (
         <div> </div>
@@ -79,7 +81,27 @@ class App extends Component {
 }
 
 const MineSweeperStyles = {
-  
+  gameStyle: {
+    height: BOARDSIZE + 50,
+    width: BOARDSIZE,
+    margin: "auto",
+  },
+  headerStyle: {
+    height: 50,
+    textAlign: "center"
+  },
+  boardStyle: {
+    margin: "auto",
+    backgroundColor: "lightgrey",
+    flexWrap: "wrap",
+    width: BOARDSIZE,
+    boxShadow: "0px 0px 2px 2px grey",
+  },
+  buttonStyle: {
+    color : 'red',
+    width : BOARDSIZE/GAMESIZE,
+    boxShadow: "0px 0px 1px 1px lightgrey",
+  }
 }
 
 export default App;
