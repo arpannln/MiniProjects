@@ -27,7 +27,6 @@ class App extends Component {
       }
     }
     this.randomizeBombs(board, Math.floor(n * n/2))
-    console.log(board);
     this.setState({ board, display });
   }
   
@@ -59,7 +58,10 @@ class App extends Component {
   }
   
   handleClick(e) {
-    
+    let display = this.state.display;
+    let key = e.target.getAttribute('datakey');
+    display[key] = "show";
+    this.setState({ display });
   }
   
 
@@ -75,11 +77,13 @@ class App extends Component {
           <div style={MineSweeperStyles.boardStyle} className="board">
             {
               //this probably needs to be a case statement so we can allow for flagging tiles
+              //hmm why can't we read key
               board.map( (row, x) => {
                 return (
                   row.map( (tile, y) => {
+                    let key = `${x}` + y;
                     return display[`${x}` + y] === "hidden" ? 
-                        <button key={`${x}` + y} style={MineSweeperStyles.buttonStyle} className="tile"></button> :
+                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.buttonStyle} className="tile"></button> :
                         <button disabled="true" key={`${x}` + y} style={MineSweeperStyles.buttonStyle} className="tile">{tile}</button>
                   })
                 );
