@@ -3,6 +3,21 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+
+  constructor() {
+    super();
+  }
+  
+  componentDidMount() {
+    
+  }
+  //plan: grid represented by buttons 
+  // need to randomize n * 3 bombs
+  // need everything else to count amount of bombs around it 
+  randomBoard(n) {
+    
+  }
+  
   render() {
     return (
       <div className="App">
