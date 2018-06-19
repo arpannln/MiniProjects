@@ -8,7 +8,7 @@ class App extends Component {
 
   constructor() {
     super();
-    this.state = { board: undefined }
+    this.state = { board: undefined, display: {} };
   }
   
   componentDidMount() {
@@ -18,13 +18,17 @@ class App extends Component {
   // need to randomize n * 3 bombs
   // need everything else to count amount of bombs around it 
   randomBoard(n) {
-    let board = new Array(n)
+    let board = new Array(n);
+    let display = {};
     for (let i = 0; i < board.length; i++) {
       board[i] = new Array(n).fill(0);
+      for (let j = 0; j < board[i].length; j++ ) {
+        display[`${i}` + j] = "hidden";
+      }
     }
     this.randomizeBombs(board, Math.floor(n * n/2))
     console.log(board);
-    this.setState({ board: board });
+    this.setState({ board, display });
   }
   
   randomizeBombs(board, bombCount) {
@@ -53,21 +57,30 @@ class App extends Component {
     if (!isNaN(board[x][y - 1])) board[x][y - 1] += 1;
     if (!isNaN(board[x][y + 1])) board[x][y + 1] += 1;
   }
+  
+  handleClick(e) {
+    
+  }
+  
 
   
   render() {
     let board = this.state.board;
+    let display = this.state.display;
+    console.log(this.state);
     console.log(board);
     return board ? 
       (<div style={MineSweeperStyles.gameStyle} className="game">
           <h2 style={MineSweeperStyles.headerStyle}>MINESWEEPER</h2>
           <div style={MineSweeperStyles.boardStyle} className="board">
             {
-              board.map( (row) => {
+              //this probably needs to be a case statement so we can allow for flagging tiles
+              board.map( (row, x) => {
                 return (
                   row.map( (tile, y) => {
-                    console.log('hi');
-                    return (<button style={MineSweeperStyles.buttonStyle} className="tile">{tile}</button>);
+                    return display[`${x}` + y] === "hidden" ? 
+                        <button key={`${x}` + y} style={MineSweeperStyles.buttonStyle} className="tile"></button> :
+                        <button disabled="true" key={`${x}` + y} style={MineSweeperStyles.buttonStyle} className="tile">{tile}</button>
                   })
                 );
             })}
@@ -100,6 +113,7 @@ const MineSweeperStyles = {
   buttonStyle: {
     color : 'red',
     width : BOARDSIZE/GAMESIZE,
+    height: BOARDSIZE/GAMESIZE,
     boxShadow: "0px 0px 1px 1px lightgrey",
   }
 }
