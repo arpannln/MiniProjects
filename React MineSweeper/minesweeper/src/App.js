@@ -61,35 +61,59 @@ class App extends Component {
     let display = this.state.display;
     let board = this.state.board;
     let key = e.target.getAttribute('datakey');
-    this.spreadClick(board, display, parseInt(key[0]), parseInt(key[1]));
+    let [x, y] = [parseInt(key[0]), parseInt(key[1])];
+    if (board[x][y] === '*') {
+      e.target.style.backgroundColor = "red";
+      e.target.style.color = "black";
+      display[`${x}` + y] = "show";
+      this.setState({ board, display });
+      this.endGame();
+      return;
+    }
+    this.spreadClick(board, display, x, y);
     // display[key] = "show";
     this.setState({ board, display });
   }
   
-  //display[`${x}` + y]
+  //display[`${x}` + y] 
+  //this could be more dry, I'll worry about that later
+  //just trying to get it to work for now 
   spreadClick(board, display, x, y) {
     display[`${x}` + y] = "show";
     if (board[x + 1] && board[x + 1][y] === 0) {
       board[x + 1][y] = '';
       this.spreadClick(board, display, x + 1, y)
+    } else if (board[x + 1] && board[x + 1][y] !== '*') {
+      display[`${x + 1}` + y] = "show";
     }
     if (board[x - 1] && board[x - 1][y] === 0) {
       board[x - 1][y] = '';
       this.spreadClick(board, display, x - 1, y)
+    } else if (board[x - 1] && board[x - 1][y] !== '*') {
+      display[`${x - 1}` + y] = "show";
     }
     if (board[x][y + 1] === 0) {
       board[x][y + 1] = '';
       this.spreadClick(board, display, x, y + 1)
+    } else if (board[x][y + 1] !== '*') {
+      display[`${x}` + (y + 1)] = "show";
     }
     if (board[x][y - 1] === 0) {
       board[x][y - 1] = '';
       this.spreadClick(board, display, x, y - 1)
+    } else if (board[x][y - 1] !== '*') {
+      display[`${x}` + (y - 1)] = "show";
     }
     return;
   }
   
+  endGame() {
+    window.alert('GAME OVER');
+  }
   
-  
+  resetGame() {
+    this.randomBoard(GAMESIZE);
+  }
 
   
   render() {
@@ -109,12 +133,13 @@ class App extends Component {
                   row.map( (tile, y) => {
                     let key = `${x}` + y;
                     return display[`${x}` + y] === "hidden" ? 
-                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.buttonStyle} className="tile"></button> :
-                        <button disabled="true" key={`${x}` + y} style={MineSweeperStyles.buttonStyle} className="tile">{tile}</button>
+                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle} className="tile"></button> :
+                        <button disabled="true" key={`${x}` + y} style={MineSweeperStyles.tileStyle} className="tile">{tile}</button>
                   })
                 );
             })}
-          </div> 
+          </div>
+          <button onClick={() => this.resetGame()} style={MineSweeperStyles.buttonStyle}> START OVER </button>
         </div>
       ) :
       (
@@ -140,12 +165,18 @@ const MineSweeperStyles = {
     width: BOARDSIZE,
     boxShadow: "0px 0px 2px 2px grey",
   },
-  buttonStyle: {
-    color : 'red',
+  tileStyle: {
+    color : 'green',
     width : BOARDSIZE/GAMESIZE,
     height: BOARDSIZE/GAMESIZE,
     boxShadow: "0px 0px 1px 1px lightgrey",
+  },
+  buttonStyle: {
+    marginLeft: "30%",
+    marginTop: "10%",
+    backgroundColor: "yellow"
   }
+  
 }
 
 export default App;
