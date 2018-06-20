@@ -57,9 +57,10 @@ class App extends Component {
     if (!isNaN(board[x][y + 1])) board[x][y + 1] += 1;
   }
   
+  //look into making object copies after refactoring
   handleClick(e) {
-    let display = this.state.display;
-    let board = this.state.board;
+    let display = Object.assign(this.state.display);
+    let board = Object.assign(this.state.board);
     let key = e.target.getAttribute('datakey');
     let [x, y] = [parseInt(key[0]), parseInt(key[1])];
     if (board[x][y] === '*') {
@@ -70,6 +71,8 @@ class App extends Component {
       this.endGame();
       return;
     }
+    console.log(display);
+    console.log(this.state.display);
     this.spreadClick(board, display, x, y);
     // display[key] = "show";
     this.setState({ board, display });
@@ -78,34 +81,26 @@ class App extends Component {
   //display[`${x}` + y] 
   //this could be more dry, I'll worry about that later
   //just trying to get it to work for now 
+  //update way more dry now 
   spreadClick(board, display, x, y) {
     display[`${x}` + y] = "show";
-    if (board[x + 1] && board[x + 1][y] === 0) {
-      board[x + 1][y] = '';
-      this.spreadClick(board, display, x + 1, y)
-    } else if (board[x + 1] && board[x + 1][y] !== '*') {
-      display[`${x + 1}` + y] = "show";
-    }
-    if (board[x - 1] && board[x - 1][y] === 0) {
-      board[x - 1][y] = '';
-      this.spreadClick(board, display, x - 1, y)
-    } else if (board[x - 1] && board[x - 1][y] !== '*') {
-      display[`${x - 1}` + y] = "show";
-    }
-    if (board[x][y + 1] === 0) {
-      board[x][y + 1] = '';
-      this.spreadClick(board, display, x, y + 1)
-    } else if (board[x][y + 1] !== '*') {
-      display[`${x}` + (y + 1)] = "show";
-    }
-    if (board[x][y - 1] === 0) {
-      board[x][y - 1] = '';
-      this.spreadClick(board, display, x, y - 1)
-    } else if (board[x][y - 1] !== '*') {
-      display[`${x}` + (y - 1)] = "show";
+    this.searchDirection(board, display, x + 1, y);
+    this.searchDirection(board, display, x - 1, y);
+    this.searchDirection(board, display, x, y + 1);
+    this.searchDirection(board, display, x, y - 1);
+    return;
+  }
+  
+  searchDirection(board, display, x, y) {
+    if (board[x] && board[x][y] === 0) {
+      board[x][y] = '';
+      this.spreadClick(board, display, x, y)
+    } else if (board[x] && board[x][y] !== '*') {
+      display[`${x}` + y] = "show";
     }
     return;
   }
+  
   
   endGame() {
     window.alert('GAME OVER');
@@ -119,8 +114,7 @@ class App extends Component {
   render() {
     let board = this.state.board;
     let display = this.state.display;
-    console.log(this.state);
-    console.log(board);
+    console.log("Hi");
     return board ? 
       (<div style={MineSweeperStyles.gameStyle} className="game">
           <h2 style={MineSweeperStyles.headerStyle}>MINESWEEPER</h2>
