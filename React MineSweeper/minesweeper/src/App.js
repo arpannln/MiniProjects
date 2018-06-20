@@ -26,7 +26,7 @@ class App extends Component {
         display[`${i}` + j] = "hidden";
       }
     }
-    this.randomizeBombs(board, Math.floor(n * n/2))
+    this.randomizeBombs(board, Math.floor(n * n/10))
     this.setState({ board, display });
   }
   
@@ -59,10 +59,36 @@ class App extends Component {
   
   handleClick(e) {
     let display = this.state.display;
+    let board = this.state.board;
     let key = e.target.getAttribute('datakey');
-    display[key] = "show";
-    this.setState({ display });
+    this.spreadClick(board, display, parseInt(key[0]), parseInt(key[1]));
+    // display[key] = "show";
+    this.setState({ board, display });
   }
+  
+  //display[`${x}` + y]
+  spreadClick(board, display, x, y) {
+    display[`${x}` + y] = "show";
+    if (board[x + 1] && board[x + 1][y] === 0) {
+      board[x + 1][y] = '';
+      this.spreadClick(board, display, x + 1, y)
+    }
+    if (board[x - 1] && board[x - 1][y] === 0) {
+      board[x - 1][y] = '';
+      this.spreadClick(board, display, x - 1, y)
+    }
+    if (board[x][y + 1] === 0) {
+      board[x][y + 1] = '';
+      this.spreadClick(board, display, x, y + 1)
+    }
+    if (board[x][y - 1] === 0) {
+      board[x][y - 1] = '';
+      this.spreadClick(board, display, x, y - 1)
+    }
+    return;
+  }
+  
+  
   
 
   
