@@ -6,6 +6,10 @@ const GAMESIZE = 10;
 const BOARDSIZE = GAMESIZE * 20;
 class App extends Component {
 
+//honestly our state doesnt need to hold everything 
+//when refactoring consider putting everything in our hash
+//we can still map through the keys in our hash 
+// something like tiles = { 00: { color: red, value: *, display: hidden  }}
   constructor() {
     super();
     this.state = { board: undefined, display: {} };
@@ -55,6 +59,10 @@ class App extends Component {
     if (board[x - 1] && !isNaN(board[x - 1][y])) board[x - 1][y] += 1;
     if (!isNaN(board[x][y - 1])) board[x][y - 1] += 1;
     if (!isNaN(board[x][y + 1])) board[x][y + 1] += 1;
+  }
+  
+  revealBoard() {
+    
   }
   
   //look into making object copies after refactoring
