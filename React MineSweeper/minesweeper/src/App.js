@@ -12,7 +12,7 @@ class App extends Component {
 // something like tiles = { 00: { color: red, value: *, display: hidden  }}
   constructor() {
     super();
-    this.state = { board: undefined, display: {} };
+    this.state = { board: undefined, tiles: {} };
   }
   
   componentDidMount() {
@@ -23,15 +23,15 @@ class App extends Component {
   // need everything else to count amount of bombs around it 
   randomBoard(n) {
     let board = new Array(n);
-    let display = {};
+    let tiles = {};
     for (let i = 0; i < board.length; i++) {
       board[i] = new Array(n).fill(0);
       for (let j = 0; j < board[i].length; j++ ) {
-        display[`${i}` + j] = "hidden";
+        tiles[`${i}` + j] = { backgroundColor: "white", display: "hidden" };
       }
     }
     this.randomizeBombs(board, Math.floor(n * n/10))
-    this.setState({ board, display });
+    this.setState({ board, tiles });
   }
   
   randomizeBombs(board, bombCount) {
@@ -67,44 +67,44 @@ class App extends Component {
   
   //look into making object copies after refactoring
   handleClick(e) {
-    let display = Object.assign(this.state.display);
+    let tiles = Object.assign(this.state.tiles);
     let board = Object.assign(this.state.board);
     let key = e.target.getAttribute('datakey');
     let [x, y] = [parseInt(key[0]), parseInt(key[1])];
     if (board[x][y] === '*') {
-      e.target.style.backgroundColor = "red";
-      e.target.style.color = "black";
-      display[`${x}` + y] = "show";
-      this.setState({ board, display });
+      // e.target.style.backgroundColor = "red";
+      // e.target.style.color = "black";
+      tiles[`${x}` + y].display = "show";
+      tiles[`${x}` + y].backgroundColor = "red";
+      console.log("hi");
+      this.setState({ board, tiles });
       this.endGame();
       return;
     }
-    console.log(display);
-    console.log(this.state.display);
-    this.spreadClick(board, display, x, y);
-    // display[key] = "show";
-    this.setState({ board, display });
+    this.spreadClick(board, tiles, x, y);
+    // tiles[key] = "show";
+    this.setState({ board, tiles });
   }
   
-  //display[`${x}` + y] 
+  //tiles[`${x}` + y] 
   //this could be more dry, I'll worry about that later
   //just trying to get it to work for now 
   //update way more dry now 
-  spreadClick(board, display, x, y) {
-    display[`${x}` + y] = "show";
-    this.searchDirection(board, display, x + 1, y);
-    this.searchDirection(board, display, x - 1, y);
-    this.searchDirection(board, display, x, y + 1);
-    this.searchDirection(board, display, x, y - 1);
+  spreadClick(board, tiles, x, y) {
+    tiles[`${x}` + y].display = "show";
+    this.searchDirection(board, tiles, x + 1, y);
+    this.searchDirection(board, tiles, x - 1, y);
+    this.searchDirection(board, tiles, x, y + 1);
+    this.searchDirection(board, tiles, x, y - 1);
     return;
   }
   
-  searchDirection(board, display, x, y) {
+  searchDirection(board, tiles, x, y) {
     if (board[x] && board[x][y] === 0) {
       board[x][y] = '';
-      this.spreadClick(board, display, x, y)
-    } else if (board[x] && board[x][y] !== '*') {
-      display[`${x}` + y] = "show";
+      this.spreadClick(board, tiles, x, y)
+    } else if (board[x] && board[x][y] && board[x][y] !== '*') {
+      tiles[`${x}` + y].display = "show";
     }
     return;
   }
@@ -121,7 +121,7 @@ class App extends Component {
   
   render() {
     let board = this.state.board;
-    let display = this.state.display;
+    let tiles = this.state.tiles;
     console.log("Hi");
     return board ? 
       (<div style={MineSweeperStyles.gameStyle} className="game">
@@ -134,9 +134,10 @@ class App extends Component {
                 return (
                   row.map( (tile, y) => {
                     let key = `${x}` + y;
-                    return display[`${x}` + y] === "hidden" ? 
-                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle} className="tile"></button> :
-                        <button disabled="true" key={`${x}` + y} style={MineSweeperStyles.tileStyle} className="tile">{tile}</button>
+                    console.log(tiles[key]);
+                    return tiles[key].display === "hidden" ? 
+                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle(tiles[key].backgroundColor)} className="tile"></button> :
+                        <button disabled="true" key={`${x}` + y} style={MineSweeperStyles.tileStyle(tiles[key].backgroundColor)} className="tile">{tile}</button>
                   })
                 );
             })}
@@ -167,11 +168,15 @@ const MineSweeperStyles = {
     width: BOARDSIZE,
     boxShadow: "0px 0px 2px 2px grey",
   },
-  tileStyle: {
-    color : 'green',
-    width : BOARDSIZE/GAMESIZE,
-    height: BOARDSIZE/GAMESIZE,
-    boxShadow: "0px 0px 1px 1px lightgrey",
+  tileStyle: (backgroundColor, color) => {
+    
+    return({
+      color,
+      backgroundColor, 
+      width : BOARDSIZE/GAMESIZE,
+      height: BOARDSIZE/GAMESIZE,
+      boxShadow: "0px 0px 1px 1px lightgrey",
+    });
   },
   buttonStyle: {
     marginLeft: "30%",
