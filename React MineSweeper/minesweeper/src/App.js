@@ -4,8 +4,8 @@ import './App.css';
 
 const GAMESIZE = 10;
 const BOARDSIZE = GAMESIZE * 20;
-const COLORS = { 0: "white", 1: "blue", 2: "green", 3: "red", 4: "yellow", "*": "red", "": "white" };
-console.log(COLORS);
+const COLORS = { 0: "white", 1: "blue", 2: "green", 3: "red", 4: "orange", "*": "black", "": "white" };
+
 class App extends Component {
 
 //honestly our state doesnt need to hold everything 
@@ -92,15 +92,16 @@ class App extends Component {
   //update way more dry now 
   spreadClick(tiles, x, y) {
     tiles[`${x}` + y].display = "show";
+    console.log(`${x}` + y);
     this.searchDirection(tiles, x + 1, y);
-    this.searchDirection(tiles, x - 1, y);
     this.searchDirection(tiles, x, y + 1);
+    this.searchDirection(tiles, x - 1, y);
     this.searchDirection(tiles, x, y - 1);
     return;
   }
-  
+  // need to handle -y's properly
   searchDirection(tiles, x, y) {
-    console.log("hi");
+    console.log(`${x}` + y);
     if ( tiles[`${x}` + y] && tiles[`${x}` + y].value === 0) {
       tiles[`${x}` + y].value = "";
       this.spreadClick(tiles, x, y);
@@ -133,7 +134,6 @@ class App extends Component {
     let board = this.state.board;
     let tiles = this.state.tiles;
     let tileKeys = Object.keys(this.state.tiles).sort();
-    console.log(tiles);
     return tiles ? 
       (<div style={MineSweeperStyles.gameStyle} className="game">
           <h2 style={MineSweeperStyles.headerStyle}>MINESWEEPER</h2>
