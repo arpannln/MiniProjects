@@ -12,7 +12,7 @@ class App extends Component {
 // something like tiles = { 00: { color: red, value: *, display: hidden  }}
   constructor() {
     super();
-    this.state = { board: undefined, tiles: {} };
+    this.state = { tiles: {} };
   }
   
   componentDidMount() {
@@ -22,88 +22,87 @@ class App extends Component {
   // need to randomize n * 3 bombs
   // need everything else to count amount of bombs around it 
   randomBoard(n) {
-    let board = new Array(n);
     let tiles = {};
-    for (let i = 0; i < board.length; i++) {
-      board[i] = new Array(n).fill(0);
-      for (let j = 0; j < board[i].length; j++ ) {
-        tiles[`${i}` + j] = { backgroundColor: "white", display: "hidden" };
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++ ) {
+        tiles[`${i}` + j] = { value: "", backgroundColor: "white", display: "hidden" };
       }
     }
-    this.randomizeBombs(board, Math.floor(n * n/10))
-    this.setState({ board, tiles });
+    this.randomizeBombs(tiles, Math.floor(n * n/10))
+    this.setState({ tiles });
   }
   
-  randomizeBombs(board, bombCount) {
+  randomizeBombs(tiles, bombCount) {
     if (bombCount === 0) {
       return;
     }
-    let [x, y] = [Math.floor(Math.random() * board.length), Math.floor(Math.random() * board.length)];
-    if (board[x][y] === '*') {
-      this.randomizeBombs(board, bombCount); 
+    let [x, y] = [Math.floor(Math.random() * GAMESIZE), Math.floor(Math.random() * GAMESIZE)];
+    if (tiles[`${x}` + y].value === '*') {
+      this.randomizeBombs(tiles, bombCount); 
     } else {
-      board[x][y] = '*';
-      this.upSurroundingCount(board, x, y);
-      this.randomizeBombs(board, --bombCount);
+      tiles[`${x}` + y].value = '*';
+      tiles[`${x}` + y].color = 'black';
+      tiles[`${x}` + y].backgroundColor = 'red';
+      this.upSurroundingCount(tiles, x, y);
+      this.randomizeBombs(tiles, --bombCount);
     }
   }
   
   //this is going to just add 1 to surrounding boxes
   //fuck I dont like the code for this at all but it is what it is for now 
-  upSurroundingCount(board, x, y) {
-    if (board[x + 1] && !isNaN(board[x + 1][y])) board[x + 1][y] += 1;
-    if (board[x + 1] && !isNaN(board[x + 1][y + 1])) board[x + 1][y + 1] += 1;
-    if (board[x + 1] && !isNaN(board[x + 1][y - 1])) board[x + 1][y - 1] += 1;
-    if (board[x - 1] && !isNaN(board[x - 1][y - 1])) board[x - 1][y - 1] += 1;
-    if (board[x - 1] && !isNaN(board[x - 1][y + 1])) board[x - 1][y + 1] += 1;
-    if (board[x - 1] && !isNaN(board[x - 1][y])) board[x - 1][y] += 1;
-    if (!isNaN(board[x][y - 1])) board[x][y - 1] += 1;
-    if (!isNaN(board[x][y + 1])) board[x][y + 1] += 1;
+  upSurroundingCount(tiles, x, y) {
+    this.upDirectionCount(tiles, x + 1, y);
+    this.upDirectionCount(tiles, x - 1, y);
+    this.upDirectionCount(tiles, x + 1, y - 1);
+    this.upDirectionCount(tiles, x - 1, y - 1);
+    this.upDirectionCount(tiles, x - 1, y + 1);
+    this.upDirectionCount(tiles, x + 1, y + 1);
+    this.upDirectionCount(tiles, x, y + 1);
+    this.upDirectionCount(tiles, x, y - 1);
   }
   
-  revealBoard() {
-    
+  upDirectionCount(tiles, x, y) {
+    if (tiles[`${x}` + y] && tiles[`${x}` + y].value !== "*") {
+      tiles[`${x}` + y].value === "" ? tiles[`${x}` + y].value = 1 : tiles[`${x}` + y].value += 1;
+    }
   }
+
   
   //look into making object copies after refactoring
   handleClick(e) {
     let tiles = Object.assign(this.state.tiles);
-    let board = Object.assign(this.state.board);
     let key = e.target.getAttribute('datakey');
-    let [x, y] = [parseInt(key[0]), parseInt(key[1])];
-    if (board[x][y] === '*') {
-      // e.target.style.backgroundColor = "red";
-      // e.target.style.color = "black";
-      tiles[`${x}` + y].display = "show";
-      tiles[`${x}` + y].backgroundColor = "red";
-      console.log("hi");
-      this.setState({ board, tiles });
+    if (tiles[key].value === '*') {
+      tiles[key].display = "show";
+      tiles[key].backgroundColor = "red";
+      this.setState({ tiles });
       this.endGame();
       return;
     }
-    this.spreadClick(board, tiles, x, y);
+    this.spreadClick(tiles, key[0], key[1]);
     // tiles[key] = "show";
-    this.setState({ board, tiles });
+    this.setState({ tiles });
   }
   
   //tiles[`${x}` + y] 
   //this could be more dry, I'll worry about that later
   //just trying to get it to work for now 
   //update way more dry now 
-  spreadClick(board, tiles, x, y) {
+  spreadClick(tiles, x, y) {
     tiles[`${x}` + y].display = "show";
-    this.searchDirection(board, tiles, x + 1, y);
-    this.searchDirection(board, tiles, x - 1, y);
-    this.searchDirection(board, tiles, x, y + 1);
-    this.searchDirection(board, tiles, x, y - 1);
+    this.searchDirection(tiles, x + 1, y);
+    this.searchDirection(tiles, x - 1, y);
+    this.searchDirection(tiles, x, y + 1);
+    this.searchDirection(tiles, x, y - 1);
     return;
   }
   
-  searchDirection(board, tiles, x, y) {
-    if (board[x] && board[x][y] === 0) {
-      board[x][y] = '';
-      this.spreadClick(board, tiles, x, y)
-    } else if (board[x] && board[x][y] && board[x][y] !== '*') {
+  searchDirection(tiles, x, y) {
+    console.log("hi");
+    if ( tiles[`${x}` + y] && tiles[`${x}` + y].value === "") {
+      tiles[`${x}` + y].value = " ";
+      this.spreadClick(tiles, x, y);
+    } else if (tiles[`${x}` + y] && tiles[`${x}` + y].value !== '*') {
       tiles[`${x}` + y].display = "show";
     }
     return;
@@ -111,7 +110,16 @@ class App extends Component {
   
   
   endGame() {
+    this.revealBoard();
     window.alert('GAME OVER');
+  
+  }
+  
+  revealBoard() {
+    let tiles = this.state.tiles;
+    for (let key in tiles) {
+      tiles[key].display = "show";
+    }
   }
   
   resetGame() {
@@ -122,31 +130,29 @@ class App extends Component {
   render() {
     let board = this.state.board;
     let tiles = this.state.tiles;
-    console.log("Hi");
-    return board ? 
+    let tileKeys = Object.keys(this.state.tiles).sort();
+    console.log(tiles);
+    return tiles ? 
       (<div style={MineSweeperStyles.gameStyle} className="game">
           <h2 style={MineSweeperStyles.headerStyle}>MINESWEEPER</h2>
           <div style={MineSweeperStyles.boardStyle} className="board">
             {
               //this probably needs to be a case statement so we can allow for flagging tiles
               //hmm why can't we read key
-              board.map( (row, x) => {
-                return (
-                  row.map( (tile, y) => {
-                    let key = `${x}` + y;
-                    console.log(tiles[key]);
-                    return tiles[key].display === "hidden" ? 
-                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle(tiles[key].backgroundColor)} className="tile"></button> :
-                        <button disabled="true" key={`${x}` + y} style={MineSweeperStyles.tileStyle(tiles[key].backgroundColor)} className="tile">{tile}</button>
-                  })
-                );
-            })}
+              tileKeys.map( (key) => {
+                let tile = tiles[key];
+                let value = tiles[key].value;
+                return tile.display === "hidden" ?  
+                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle("white")} className="tile">{tile.value}</button> :
+                        <button disabled="true" key={key} style={MineSweeperStyles.tileStyle(tile.backgroundColor, "green")} className="tile">{tile.value}</button>
+              })
+            }
           </div>
           <button onClick={() => this.resetGame()} style={MineSweeperStyles.buttonStyle}> START OVER </button>
         </div>
       ) :
       (
-        <div> </div>
+        <div> HI </div>
       );
   }
 }
