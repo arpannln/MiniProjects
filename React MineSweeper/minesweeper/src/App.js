@@ -4,6 +4,8 @@ import './App.css';
 
 const GAMESIZE = 10;
 const BOARDSIZE = GAMESIZE * 20;
+const COLORS = { 0: "white", 1: "blue", 2: "green", 3: "red", 4: "yellow", "*": "red", "": "white" };
+console.log(COLORS);
 class App extends Component {
 
 //honestly our state doesnt need to hold everything 
@@ -25,7 +27,7 @@ class App extends Component {
     let tiles = {};
     for (let i = 0; i < n; i++) {
       for (let j = 0; j < n; j++ ) {
-        tiles[`${i}` + j] = { value: "", backgroundColor: "white", display: "hidden" };
+        tiles[`${i}` + j] = { value: 0, backgroundColor: "white", display: "hidden" };
       }
     }
     this.randomizeBombs(tiles, Math.floor(n * n/10))
@@ -63,7 +65,7 @@ class App extends Component {
   
   upDirectionCount(tiles, x, y) {
     if (tiles[`${x}` + y] && tiles[`${x}` + y].value !== "*") {
-      tiles[`${x}` + y].value === "" ? tiles[`${x}` + y].value = 1 : tiles[`${x}` + y].value += 1;
+      tiles[`${x}` + y].value += 1;
     }
   }
 
@@ -99,8 +101,8 @@ class App extends Component {
   
   searchDirection(tiles, x, y) {
     console.log("hi");
-    if ( tiles[`${x}` + y] && tiles[`${x}` + y].value === "") {
-      tiles[`${x}` + y].value = " ";
+    if ( tiles[`${x}` + y] && tiles[`${x}` + y].value === 0) {
+      tiles[`${x}` + y].value = "";
       this.spreadClick(tiles, x, y);
     } else if (tiles[`${x}` + y] && tiles[`${x}` + y].value !== '*') {
       tiles[`${x}` + y].display = "show";
@@ -142,9 +144,10 @@ class App extends Component {
               tileKeys.map( (key) => {
                 let tile = tiles[key];
                 let value = tiles[key].value;
+                if (value === 0) value = "";
                 return tile.display === "hidden" ?  
-                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle("white")} className="tile">{tile.value}</button> :
-                        <button disabled="true" key={key} style={MineSweeperStyles.tileStyle(tile.backgroundColor, "green")} className="tile">{tile.value}</button>
+                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle("white", COLORS[value])} className="tile">{value}</button> :
+                        <button disabled="true" key={key} style={MineSweeperStyles.tileStyle(tile.backgroundColor, COLORS[value])} className="tile">{value}</button>
               })
             }
           </div>
