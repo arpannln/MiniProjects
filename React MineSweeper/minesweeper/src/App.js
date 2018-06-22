@@ -81,7 +81,7 @@ class App extends Component {
       this.endGame();
       return;
     }
-    this.spreadClick(tiles, key[0], key[1]);
+    this.spreadClick(tiles, Number(key[0]), Number(key[1]));
     // tiles[key] = "show";
     this.setState({ tiles });
   }
@@ -93,14 +93,21 @@ class App extends Component {
   spreadClick(tiles, x, y) {
     tiles[`${x}` + y].display = "show";
     console.log(`${x}` + y);
+    // let x1 = x + 1;
+    // let x2 = x - 1; 
+    // let y1 = y + 1;
+    // let y2 = y - 1;
     this.searchDirection(tiles, x + 1, y);
     this.searchDirection(tiles, x, y + 1);
     this.searchDirection(tiles, x - 1, y);
     this.searchDirection(tiles, x, y - 1);
-    return;
   }
   // need to handle -y's properly
   searchDirection(tiles, x, y) {
+    if (y === 10) {
+      x += 1; 
+      y = 0;
+    }
     console.log(`${x}` + y);
     if ( tiles[`${x}` + y] && tiles[`${x}` + y].value === 0) {
       tiles[`${x}` + y].value = "";
@@ -139,8 +146,6 @@ class App extends Component {
           <h2 style={MineSweeperStyles.headerStyle}>MINESWEEPER</h2>
           <div style={MineSweeperStyles.boardStyle} className="board">
             {
-              //this probably needs to be a case statement so we can allow for flagging tiles
-              //hmm why can't we read key
               tileKeys.map( (key) => {
                 let tile = tiles[key];
                 let value = tiles[key].value;
