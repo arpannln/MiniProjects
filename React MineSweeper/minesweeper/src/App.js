@@ -5,8 +5,29 @@ import './App.css';
 const GAMESIZE = 10;
 const BOARDSIZE = GAMESIZE * 50;
 const BOMBCOUNT = 20;
-const COLORS = { 1: "blue", 2: "green", 3: "red", 4: "orange", "*": "black", "": "lightgrey", "X": "grey" };
+const COLORS = { 0: "#FF1493", 1: "#c660ff", 2: "#0099cc", 3: "#93ff68", 4: "#ffb543", 5: "#FF1493", 6: "#e4ff55", 7: "#ff5a5a", 8: "#ff5a5a", "*": "black", "": "lightgrey", "X": "grey" };
 
+// neonPink: {
+//     color: '#FF1493',
+//   },
+//   neonBlue: {
+//     color: '#0099cc',
+//   },
+//   neonGreen: {
+//     color: '#93ff68',
+//   },
+//   neonYellow: {
+//     color: '#e4ff55',
+//   },
+//   neonOrange: {
+//     color: '#ffb543',
+//   },
+//   neonRed: {
+//     color: '#ff5a5a'
+//   },
+//   neonPurple: {
+//     color: '#c660ff'
+  // },
 class App extends Component {
 
 //honestly our state doesnt need to hold everything 
@@ -44,7 +65,7 @@ class App extends Component {
       this.randomizeBombs(tiles, bombCount); 
     } else {
       tiles[`${x}` + y].value = '*';
-      tiles[`${x}` + y].color = 'red';
+      tiles[`${x}` + y].color = '#ff5a5a';
       this.upSurroundingCount(tiles, x, y);
       this.randomizeBombs(tiles, --bombCount);
     }
@@ -103,6 +124,7 @@ class App extends Component {
     this.searchDirection(tiles, x, y - 1);
   }
   // need to handle -y's properly
+  
   searchDirection(tiles, x, y) {
     if (y === 10) {
       x += 1; 
