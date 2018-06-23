@@ -3,7 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 
 const GAMESIZE = 10;
-const BOARDSIZE = GAMESIZE * 35;
+const BOARDSIZE = GAMESIZE * 50;
+const BOMBCOUNT = 20;
 const COLORS = { 1: "blue", 2: "green", 3: "red", 4: "orange", "*": "black", "": "lightgrey", "X": "grey" };
 
 class App extends Component {
@@ -27,10 +28,10 @@ class App extends Component {
     let tiles = {};
     for (let i = 0; i < n; i++) {
       for (let j = 0; j < n; j++ ) {
-        tiles[`${i}` + j] = { value: 0, backgroundColor: "black", display: "hidden", color: "black" };
+        tiles[`${i}` + j] = { value: 0, backgroundColor: "black", display: "hidden", color: "white" };
       }
     }
-    this.randomizeBombs(tiles, Math.floor(n * n/10))
+    this.randomizeBombs(tiles, BOMBCOUNT);
     this.setState({ tiles });
   }
   
@@ -188,10 +189,11 @@ const MineSweeperStyles = {
       color,
       backgroundColor,
       borderRadius: "50px",
+      fontWeight: 200,
       width : BOARDSIZE/GAMESIZE,
       height: BOARDSIZE/GAMESIZE,
       boxShadow: "0px 0px 1px 1px white",
-      transition: "all 0.5 s ease",
+      transition: "all 1.5s ease",
     });
   },
   buttonStyle: {
