@@ -3,8 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 
 const GAMESIZE = 10;
-const BOARDSIZE = GAMESIZE * 20;
-const COLORS = { 0: "white", 1: "blue", 2: "green", 3: "red", 4: "orange", "*": "black", "": "white" };
+const BOARDSIZE = GAMESIZE * 35;
+const COLORS = { 1: "blue", 2: "green", 3: "red", 4: "orange", "*": "black", "": "lightgrey", "X": "grey" };
 
 class App extends Component {
 
@@ -44,7 +44,6 @@ class App extends Component {
     } else {
       tiles[`${x}` + y].value = '*';
       tiles[`${x}` + y].color = 'red';
-      tiles[`${x}` + y].backgroundColor = 'red';
       this.upSurroundingCount(tiles, x, y);
       this.randomizeBombs(tiles, --bombCount);
     }
@@ -111,7 +110,8 @@ class App extends Component {
     if (y < 0 || x < 0) return;
     console.log(`${x}` + y);
     if ( tiles[`${x}` + y] && tiles[`${x}` + y].value === 0) {
-      tiles[`${x}` + y].value = "";
+      tiles[`${x}` + y].value = "X";
+      tiles[`${x}` + y].color = "white";
       this.spreadClick(tiles, x, y);
     } else if (tiles[`${x}` + y] && tiles[`${x}` + y].value !== '*') {
       tiles[`${x}` + y].display = "show";
@@ -150,10 +150,9 @@ class App extends Component {
               tileKeys.map( (key) => {
                 let tile = tiles[key];
                 let value = tiles[key].value;
-                if (value === 0) value = " ";
                 return tile.display === "hidden" ?  
-                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle(COLORS[value], "white")} className="tile">  </button> :
-                        <button disabled="true" key={key} style={MineSweeperStyles.tileStyle(tile.color, COLORS[value])} className="tile">{value}</button>
+                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle(COLORS[value], "white")} className="tile"> -.- </button> :
+                        <button disabled="true" key={key} style={MineSweeperStyles.tileStyle(tile.color, COLORS[value])} className="tile"><span style={{margin: "none"}} >{value}</span></button>
               })
             }
           </div>
@@ -188,7 +187,7 @@ const MineSweeperStyles = {
     return({
       color,
       backgroundColor,
-      borderRadius: "10px",
+      borderRadius: "50px",
       width : BOARDSIZE/GAMESIZE,
       height: BOARDSIZE/GAMESIZE,
       boxShadow: "0px 0px 1px 1px white",
