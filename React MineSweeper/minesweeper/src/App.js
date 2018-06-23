@@ -197,6 +197,9 @@ const MineSweeperStyles = {
     });
   },
   buttonStyle: {
+    width: "100px",
+    height: "50px",
+    borderRadius: "5px",
     marginLeft: "30%",
     marginTop: "10%",
     backgroundColor: "yellow"
