@@ -153,7 +153,7 @@ class App extends Component {
                 if (value === 0) value = " ";
                 return tile.display === "hidden" ?  
                         <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle(COLORS[value], "white")} className="tile">  </button> :
-                        <button disabled="true" onClick={console.log("hi")} key={key} style={MineSweeperStyles.tileStyle(tile.color, COLORS[value])} className="tile">{value}</button>
+                        <button disabled="true" key={key} style={MineSweeperStyles.tileStyle(tile.color, COLORS[value])} className="tile">{value}</button>
               })
             }
           </div>
@@ -178,7 +178,7 @@ const MineSweeperStyles = {
   },
   boardStyle: {
     margin: "auto",
-    backgroundColor: "lightgrey",
+    backgroundColor: "black",
     flexWrap: "wrap",
     width: BOARDSIZE,
     boxShadow: "0px 0px 2px 2px grey",
@@ -191,7 +191,7 @@ const MineSweeperStyles = {
       borderRadius: "10px",
       width : BOARDSIZE/GAMESIZE,
       height: BOARDSIZE/GAMESIZE,
-      boxShadow: "0px 0px 1px 1px lightgrey",
+      boxShadow: "0px 0px 1px 1px white",
       transition: "all 0.5 s ease",
     });
   },
