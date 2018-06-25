@@ -34,7 +34,12 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
+  background-color: gray;
+  justify-content: space-around;
   align-items: center;
   margin-bottom: 2vh;
+}
+
+body {
+  background-color: lightgray;
 }

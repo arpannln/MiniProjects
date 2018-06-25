@@ -36,12 +36,14 @@ class App extends Component {
 // something like tiles = { 00: { color: red, value: *, display: hidden  }}
   constructor() {
     super();
-    this.state = { tiles: {}, bombCount: 20 };
+    this.state = { tiles: {}, bombCount: 10 };
   }
   
   componentDidMount() {
     this.randomBoard(GAMESIZE);
   }
+
+  
   //plan: grid represented by buttons 
   // need to randomize n * 3 bombs
   // need everything else to count amount of bombs around it 
@@ -155,6 +157,17 @@ class App extends Component {
   resetGame() {
     this.randomBoard(GAMESIZE);
   }
+  
+  updateBombcount(e) {
+    let that = this;
+    async function update () {
+      await that.setState({bombCount: e.target.value});
+      console.log(that.state.bombCount);
+      that.resetGame();
+    }
+    
+    update();
+  }
 
   
   render() {
@@ -166,8 +179,8 @@ class App extends Component {
           <h2 style={MineSweeperStyles.headerStyle}>MINESWEEPER</h2>
           <div className="header">
             <button id="clickable" onClick={() => this.resetGame()} style={MineSweeperStyles.buttonStyle}> START OVER </button>
-            <label> # of Bombs
-              <input type="number" style={MineSweeperStyles.inputStyle} onChange="" value="10"/>
+            <label> # of Bombs: &nbsp;
+              <input type="number" style={MineSweeperStyles.inputStyle} min="1" max="100" onChange={(e) => this.updateBombcount(e)} value={this.state.bombCount}/>
             </label>
           </div>
           <div style={MineSweeperStyles.boardStyle} className="board">
@@ -223,15 +236,13 @@ const MineSweeperStyles = {
     color: "white",
     width: "20%",
     height: "50px",
-    margin: "auto",
     borderRadius: "5px",
     backgroundColor: "black",
     boxShadow: "0px 0px 1px 1px white",
     transition: "all 1.0s ease",
   },
   inputStyle: {
-    width: "15%",
-    marginLeft: "10%",
+    width: "20%",
   }
   
 }
