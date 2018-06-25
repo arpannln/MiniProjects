@@ -126,11 +126,7 @@ class App extends Component {
   // need to handle -y's properly
   
   searchDirection(tiles, x, y) {
-    if (y === 10) {
-      x += 1; 
-      y = 0;
-    }
-    if (y < 0 || x < 0 || x >= 10) return;
+    if (y < 0 || x < 0 || y >= 10) return;
     console.log(`${x}` + y);
     if ( tiles[`${x}` + y] && tiles[`${x}` + y].value === 0) {
       tiles[`${x}` + y].value = "X";
