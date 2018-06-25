@@ -36,11 +36,18 @@ class App extends Component {
 // something like tiles = { 00: { color: red, value: *, display: hidden  }}
   constructor() {
     super();
-    this.state = { tiles: {}, bombCount: 10 };
+    this.state = { tiles: {}, bombCount: 10, timer: "60" };
   }
   
   componentDidMount() {
     this.randomBoard(GAMESIZE);
+    setInterval(() => {
+        this.setState({timer: --this.state.timer});
+        if (this.state.timer === 0) {
+          this.endGame();
+        }
+        },
+        1000);
   }
 
   
@@ -168,6 +175,14 @@ class App extends Component {
     
     update();
   }
+  
+  displayTimer() {
+    let time = this.state.timer; 
+    let minutes = Math.floor(time/60);
+    let seconds = time % 60;
+    if (seconds < 10) seconds = '0' + seconds;
+    return `${minutes} : ${seconds}`;
+  }
 
   
   render() {
@@ -182,6 +197,7 @@ class App extends Component {
             <label> # of Bombs: &nbsp;
               <input type="number" style={MineSweeperStyles.inputStyle} min="1" max="100" onChange={(e) => this.updateBombcount(e)} value={this.state.bombCount}/>
             </label>
+            <h1 style={MineSweeperStyles.clockStyle}>{this.displayTimer()}</h1>
           </div>
           <div style={MineSweeperStyles.boardStyle} className="board">
             {
@@ -240,6 +256,9 @@ const MineSweeperStyles = {
     backgroundColor: "black",
     boxShadow: "0px 0px 1px 1px white",
     transition: "all 1.0s ease",
+  },
+  clockStyle: {
+    color: "darkred",
   },
   inputStyle: {
     width: "20%",
