@@ -27,7 +27,7 @@
   to { transform: rotate(360deg); }
 }
 
-button:hover {
+#clickable:hover {
   transform: scale(1.2);
   cursor: pointer;
 }

@@ -3,9 +3,9 @@ import logo from './logo.svg';
 import './App.css';
 
 const GAMESIZE = 10;
-const BOARDSIZE = GAMESIZE * 50;
+const BOARDSIZE = GAMESIZE * 60;
 const BOMBCOUNT = 20;
-const COLORS = { 0: "#FF1493", 1: "#c660ff", 2: "#0099cc", 3: "#93ff68", 4: "#ffb543", 5: "#FF1493", 6: "#e4ff55", 7: "#ff5a5a", 8: "#ff5a5a", "*": "black", "": "lightgrey", "X": "grey" };
+const COLORS = { 0: "#7FFFD4", 1: "#c660ff", 2: "#0099cc", 3: "#FF1493", 4: "#ffb543", 5: "#93ff68", 6: "#e4ff55", 7: "#ff5a5a", 8: "#ff5a5a", "*": "black", "": "lightgrey", "X": "grey" };
 
 // neonPink: {
 //     color: '#FF1493',
@@ -36,7 +36,7 @@ class App extends Component {
 // something like tiles = { 00: { color: red, value: *, display: hidden  }}
   constructor() {
     super();
-    this.state = { tiles: {} };
+    this.state = { tiles: {}, bombCount: 20 };
   }
   
   componentDidMount() {
@@ -52,7 +52,7 @@ class App extends Component {
         tiles[`${i}` + j] = { value: 0, backgroundColor: "black", display: "hidden", color: "white" };
       }
     }
-    this.randomizeBombs(tiles, BOMBCOUNT);
+    this.randomizeBombs(tiles, this.state.bombCount);
     this.setState({ tiles });
   }
   
@@ -174,12 +174,13 @@ class App extends Component {
                 let tile = tiles[key];
                 let value = tiles[key].value;
                 return tile.display === "hidden" ?  
-                        <button onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle(COLORS[value], "white")} className="tile"> -.- </button> :
+                        <button id="clickable" onClick={(e) => this.handleClick(e)} datakey={key} key={key} style={MineSweeperStyles.tileStyle("black", "white")} className="tile"> -.- </button> :
                         <button disabled="true" key={key} style={MineSweeperStyles.tileStyle(tile.color, COLORS[value])} className="tile"><span style={{margin: "none"}} >{value}</span></button>
               })
             }
           </div>
-          <button onClick={() => this.resetGame()} style={MineSweeperStyles.buttonStyle}> START OVER </button>
+          <button id="clickable" onClick={() => this.resetGame()} style={MineSweeperStyles.buttonStyle}> START OVER </button>
+          <input type="number" onChange="" value="10"/>
         </div>
       ) :
       (
@@ -219,12 +220,14 @@ const MineSweeperStyles = {
     });
   },
   buttonStyle: {
-    width: "100px",
+    color: "white",
+    width: "20%",
     height: "50px",
     borderRadius: "5px",
-    marginLeft: "30%",
-    marginTop: "10%",
-    backgroundColor: "yellow"
+    margin: "10% 0% 40% 40%",
+    backgroundColor: "black",
+    boxShadow: "0px 0px 1px 1px white",
+    transition: "all 1.5s ease",
   }
   
 }
