@@ -130,7 +130,7 @@ class App extends Component {
       x += 1; 
       y = 0;
     }
-    if (y < 0 || x < 0) return;
+    if (y < 0 || x < 0 || x >= 10) return;
     console.log(`${x}` + y);
     if ( tiles[`${x}` + y] && tiles[`${x}` + y].value === 0) {
       tiles[`${x}` + y].value = "X";
@@ -168,6 +168,12 @@ class App extends Component {
     return tiles ? 
       (<div style={MineSweeperStyles.gameStyle} className="game">
           <h2 style={MineSweeperStyles.headerStyle}>MINESWEEPER</h2>
+          <div className="header">
+            <button id="clickable" onClick={() => this.resetGame()} style={MineSweeperStyles.buttonStyle}> START OVER </button>
+            <label> # of Bombs
+              <input type="number" style={MineSweeperStyles.inputStyle} onChange="" value="10"/>
+            </label>
+          </div>
           <div style={MineSweeperStyles.boardStyle} className="board">
             {
               tileKeys.map( (key) => {
@@ -179,8 +185,6 @@ class App extends Component {
               })
             }
           </div>
-          <button id="clickable" onClick={() => this.resetGame()} style={MineSweeperStyles.buttonStyle}> START OVER </button>
-          <input type="number" onChange="" value="10"/>
         </div>
       ) :
       (
@@ -223,11 +227,15 @@ const MineSweeperStyles = {
     color: "white",
     width: "20%",
     height: "50px",
+    margin: "auto",
     borderRadius: "5px",
-    margin: "10% 0% 40% 40%",
     backgroundColor: "black",
     boxShadow: "0px 0px 1px 1px white",
-    transition: "all 1.5s ease",
+    transition: "all 1.0s ease",
+  },
+  inputStyle: {
+    width: "15%",
+    marginLeft: "10%",
   }
   
 }
