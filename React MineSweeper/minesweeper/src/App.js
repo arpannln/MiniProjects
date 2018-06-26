@@ -3,8 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 
 const GAMESIZE = 10;
-const BOARDSIZE = GAMESIZE * 60;
-const BOMBCOUNT = 20;
+// const BOARDSIZE = GAMESIZE * 60;
+// const BOMBCOUNT = 20;
 const COLORS = { 0: "#7FFFD4", 1: "#c660ff", 2: "#0099cc", 3: "#FF1493", 4: "#ffb543", 5: "#93ff68", 6: "#e4ff55", 7: "#ff5a5a", 8: "#ff5a5a", "*": "black", "": "lightgrey", "X": "grey" };
 
 // neonPink: {
@@ -36,20 +36,19 @@ class App extends Component {
 // something like tiles = { 00: { color: red, value: *, display: hidden  }}
   constructor() {
     super();
-    this.state = { tiles: {}, bombCount: 10, timer: "60" };
+    this.state = { tiles: {}, bombCount: 10, timer: "300" };
   }
   
   componentDidMount() {
     this.randomBoard(GAMESIZE);
-    setInterval(() => {
-        this.setState({timer: --this.state.timer});
-        if (this.state.timer === 0) {
-          this.endGame();
-        }
-        },
-        1000);
+    this.update();
   }
-
+  
+  update = () => {
+    return setInterval(() => 
+      this.updateTimer(),
+      1000);
+  }
   
   //plan: grid represented by buttons 
   // need to randomize n * 3 bombs
@@ -150,8 +149,10 @@ class App extends Component {
   
   endGame() {
     this.revealBoard();
+    clearInterval(this.update());
+    this.setState({timer: 301});
     window.alert('GAME OVER');
-  
+    
   }
   
   revealBoard() {
@@ -162,10 +163,12 @@ class App extends Component {
   }
   
   resetGame() {
+    this.setState({timer: 300});
     this.randomBoard(GAMESIZE);
   }
   
   updateBombcount(e) {
+    if (e.target.value <= 0) return;
     let that = this;
     async function update () {
       await that.setState({bombCount: e.target.value});
@@ -174,6 +177,13 @@ class App extends Component {
     }
     
     update();
+  }
+  
+  updateTimer() {
+    if (this.state.timer === 0) {
+      this.endGame();
+    }
+    this.setState({timer: --this.state.timer});
   }
   
   displayTimer() {
@@ -220,19 +230,24 @@ class App extends Component {
 
 const MineSweeperStyles = {
   gameStyle: {
-    height: BOARDSIZE + 50,
-    width: BOARDSIZE,
+    height: "90vh",
+    width: "80vw",
     margin: "auto",
   },
   headerStyle: {
-    height: 50,
-    textAlign: "center"
+    textAlign: "center",
+    marginTop: "0",
+    marginBottom: "0",
+    backgroundColor: "white",
+    textShadow: "1px 1px grey",
+    borderBottom: "1px solid black"
   },
   boardStyle: {
     margin: "auto",
     backgroundColor: "black",
     flexWrap: "wrap",
-    width: BOARDSIZE,
+    width: "80vw",
+    height: "80vh",
     boxShadow: "0px 0px 2px 2px grey",
   },
   tileStyle: (color, backgroundColor) => {
@@ -242,8 +257,8 @@ const MineSweeperStyles = {
       backgroundColor,
       borderRadius: "50px",
       fontWeight: 200,
-      width : BOARDSIZE/GAMESIZE,
-      height: BOARDSIZE/GAMESIZE,
+      width : "8vw",
+      height: "8vh",
       boxShadow: "0px 0px 1px 1px white",
       transition: "all 1.5s ease",
     });

@@ -37,7 +37,7 @@
   background-color: gray;
   justify-content: space-around;
   align-items: center;
-  margin-bottom: 2vh;
+  border-bottom: 1vh solid black;
 }
 
 body {
