@@ -1,14 +1,24 @@
-function $(selector) {
-  this.value = document.querySelectorAll(`${selector}`);
+(function() {
+  if (typeof $ === "undefined") {
+    window.$ = {};
+  }
 
-  this.nthChild = function(n) {
-    this.value[n];
-    return this;
-  };
+  let eventQueue = [];
 
-  this.return = function() {
-    return this.value;
-  };
+  document.addEventListener('DOMContentLoaded', function () {
+    eventQueue.forEach(function (fn) {
+      fn();
+    });
+  }, false);
 
-  return this.value;
-}
+
+
+
+  $ = function(arg) {
+    let htmlEls;
+
+    if (arg instanceof Function) {
+      eventQueue.push(arg);
+      return document;
+    } else if (arg )
+  }
