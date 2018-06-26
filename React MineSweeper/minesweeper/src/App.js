@@ -230,7 +230,7 @@ class App extends Component {
 
 const MineSweeperStyles = {
   gameStyle: {
-    height: "90vh",
+    height: "90vw",
     width: "80vw",
     margin: "auto",
   },
@@ -247,7 +247,7 @@ const MineSweeperStyles = {
     backgroundColor: "black",
     flexWrap: "wrap",
     width: "80vw",
-    height: "80vh",
+    height: "80vw",
     boxShadow: "0px 0px 2px 2px grey",
   },
   tileStyle: (color, backgroundColor) => {
@@ -258,7 +258,7 @@ const MineSweeperStyles = {
       borderRadius: "50px",
       fontWeight: 200,
       width : "8vw",
-      height: "8vh",
+      height: "8vw",
       boxShadow: "0px 0px 1px 1px white",
       transition: "all 1.5s ease",
     });

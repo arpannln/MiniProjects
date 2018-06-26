@@ -24,13 +24,14 @@ class App extends Component {
     switch (userInput) {
       case '=' :
         const answer = eval(this.state.question);
-        
-        this.setState({ question: answer, answer });
+        this.setState({ answer });
         break; 
       case 'AC' :
         this.setState({ question: '', answer: '' });
         break;
       default: 
+      //need to check if the expression is still valid
+      // we should create a helper function to do this 
         this.setState({ question: this.state.question += userInput});
         break;
     }
@@ -39,12 +40,14 @@ class App extends Component {
 
   }
   
+  
+  
   render() {
     const numbers = [0, 1,'AC',2, 3, 4, 5, 6, 7, 8, 9, '='];
     const operators = ['*', '/', '+', '-'];
     return (
       <div className="calculator">
-        <div className="calculation"> {this.state.question} = {this.state.answer}</div>
+        <div className="calculation"> {this.state.question} = &nbsp; <br/> {this.state.answer} &nbsp; </div>
         <div className="user-interface">
           <div className="numbers">
             {numbers.map( (number) => {
