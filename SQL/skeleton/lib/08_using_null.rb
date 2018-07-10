@@ -69,6 +69,13 @@ def teachers_and_depts
   # department name. Use the string 'None' where there is no
   # department.
   execute(<<-SQL)
+    SELECT
+      teachers.name, COALESCE(depts.name, 'None')
+    FROM
+      teachers
+    LEFT OUTER JOIN depts ON teachers.dept_id = depts.id
+
+
   SQL
 end
 
@@ -77,6 +84,10 @@ def num_teachers_and_mobiles
   # mobile phones.
   # NB: COUNT only counts non-NULL values.
   execute(<<-SQL)
+    SELECT
+      COUNT(teachers.name), COUNT(teachers.mobile)
+    FROM
+      teachers
   SQL
 end
 
