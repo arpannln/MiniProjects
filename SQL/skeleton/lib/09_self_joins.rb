@@ -111,7 +111,7 @@ def cl_to_lr
   JOIN
     routes b ON (a.company = b.company AND a.num = b.num)
   WHERE
-    a.stop_id = 53
+    a.stop_id = 53 AND b.stop_id = 149
   SQL
 end
 
