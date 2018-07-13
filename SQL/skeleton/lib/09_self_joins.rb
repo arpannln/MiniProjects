@@ -161,6 +161,15 @@ def craiglockhart_and_tollcross
   # Give the company and num of the services that connect stops
   # 'Craiglockhart' and 'Tollcross'
   execute(<<-SQL)
+    SELECT DISTINCT
+      a.company,
+      a.num
+    FROM routes AS a
+    JOIN routes AS b ON a.company = b.company AND a.num = b.num
+    JOIN stops AS start ON a.stop_id = start.id
+    JOIN stops AS finish ON b.stop_id = finish.id
+    WHERE
+      start.name = 'Craiglockhart' AND finish.name = 'Tollcross'
   SQL
 end
 
@@ -169,6 +178,15 @@ def start_at_craiglockhart
   # by taking one bus, including 'Craiglockhart' itself. Include the stop name,
   # as well as the company and bus no. of the relevant service.
   execute(<<-SQL)
+    SELECT DISTINCT
+      stops.name
+      a.company,
+      a.num,
+    FROM routes AS a
+    JOIN routes AS b ON a.company = b.company AND a.num = b.num
+    JOIN stops ON b.stop_id = stops.id
+    WHERE
+      stops.name = 'Craiglockhart'
   SQL
 end
 
