@@ -9,3 +9,4 @@ export default function configureStore() {
     applyMiddleware(thunk)
   );
 }
+view raw
